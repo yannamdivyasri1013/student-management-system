@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block title %}Students{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div><p class="section-label">Records</p><h2>Student Directory</h2></div>
+    <a href="{% url 'add_student' %}" class="btn btn-primary"><i class="bi bi-plus-lg me-1"></i> Add Student</a>
+</div>
+
+<div class="card filter-card mb-4">
+    <div class="card-body">
+        <form method="get" class="row g-2 align-items-end">
+            <div class="col-lg-5">
+                <label class="form-label small fw-bold">Search</label>
+                <input type="text" class="form-control" name="q" value="{{ query }}" placeholder="Name, roll number or email">
+            </div>
+            <div class="col-sm-6 col-lg-2">
+                <label class="form-label small fw-bold">Department</label>
+                <select class="form-select" name="department">
+                    <option value="">All departments</option>
+                    {% for value, label in department_choices %}<option value="{{ value }}" {% if department == value %}selected{% endif %}>{{ label }}</option>{% endfor %}
+                </select>
+            </div>
+            <div class="col-sm-6 col-lg-2">
+                <label class="form-label small fw-bold">Year</label>
+                <select class="form-select" name="year">
+                    <option value="">All years</option>
+                    {% for value, label in year_choices %}<option value="{{ value }}" {% if year == value %}selected{% endif %}>{{ label }}</option>{% endfor %}
+                </select>
+            </div>
+            <div class="col-sm-6 col-lg-1 d-grid"><button type="submit" class="btn btn-primary">Filter</button></div>
+            <div class="col-sm-6 col-lg-2 d-grid">
+                <button type="submit" name="export" value="csv" class="btn btn-outline-primary"><i class="bi bi-download me-1"></i> CSV</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body p-0">
+        {% if students %}
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead><tr><th>Student</th><th>Roll No</th><th>Email</th><th>Department</th><th>Year</th><th class="text-end">Actions</th></tr></thead>
+                <tbody>
+                    {% for student in students %}
+                    <tr>
+                        <td><strong>{{ student.name }}</strong></td><td><span class="badge text-bg-light border">{{ student.roll_number }}</span></td>
+                        <td>{{ student.email }}</td><td>{{ student.department }}</td><td>{{ student.year }}</td>
+                        <td><div class="table-actions d-flex justify-content-end gap-2">
+                            <a href="{% url 'student_profile' student.pk %}" class="btn btn-sm btn-outline-primary" title="View"><i class="bi bi-eye"></i></a>
+                            <a href="{% url 'update_student' student.pk %}" class="btn btn-sm btn-outline-secondary" title="Edit"><i class="bi bi-pencil"></i></a>
+                            <a href="{% url 'delete_student' student.pk %}" class="btn btn-sm btn-outline-danger" title="Delete"><i class="bi bi-trash"></i></a>
+                        </div></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}<div class="empty-state"><i class="bi bi-search"></i>No student records match your filters.</div>{% endif %}
+    </div>
+</div>
+{% endblock %}

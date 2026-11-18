@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %}Marks Management{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <p class="section-label">Academic</p>
+        <h2>Marks for {{ student.name }}</h2>
+    </div>
+</div>
+
+<div class="card border-0 shadow-sm">
+    <div class="card-body p-4">
+        <form method="post">
+            {% csrf_token %}
+            <div class="row g-3">
+                {% for subject in form.subject_fields %}
+                <div class="col-md-6">
+                    <label class="form-label">{{ subject.name.label }}</label>
+                    {{ subject.name }}
+                    {% if subject.name.errors %}
+                        <div class="text-danger small mt-1">{{ subject.name.errors|join:', ' }}</div>
+                    {% endif %}
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">{{ subject.mark.label }}</label>
+                    {{ subject.mark }}
+                    {% if subject.mark.errors %}
+                        <div class="text-danger small mt-1">{{ subject.mark.errors|join:', ' }}</div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+
+            {% if form.non_field_errors %}
+                <div class="alert alert-danger mt-3">
+                    {{ form.non_field_errors }}
+                </div>
+            {% endif %}
+
+            <div class="mt-4 d-flex gap-2">
+                <button type="submit" class="btn btn-primary">Save Marks</button>
+                <a href="{% url 'student_profile' student.pk %}" class="btn btn-outline-secondary">Back</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

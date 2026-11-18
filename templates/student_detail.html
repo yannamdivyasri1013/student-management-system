@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %}Student Profile{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <p class="section-label">Student</p>
+        <h2>{{ student.name }}</h2>
+    </div>
+    <div class="d-flex gap-2">
+        <a href="{% url 'update_student' student.pk %}" class="btn btn-primary">Edit</a>
+        <a href="{% url 'marks_management' student.pk %}" class="btn btn-outline-primary">Marks</a>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-6">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body">
+                <h5 class="fw-bold mb-3">Profile Details</h5>
+                <ul class="student-profile-list list-unstyled">
+                    <li><strong>Roll Number:</strong> {{ student.roll_number }}</li>
+                    <li><strong>Email:</strong> {{ student.email }}</li>
+                    <li><strong>Phone:</strong> {{ student.phone_number }}</li>
+                    <li><strong>Gender:</strong> {{ student.gender }}</li>
+                    <li><strong>Date of Birth:</strong> {{ student.date_of_birth }}</li>
+                    <li><strong>Department:</strong> {{ student.department }}</li>
+                    <li><strong>Year:</strong> {{ student.year }}</li>
+                    <li><strong>Age:</strong> {{ student.age }} years</li>
+                    <li><strong>Address:</strong> {{ student.address }}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body">
+                <h5 class="fw-bold mb-3">Academic Result</h5>
+                {% if student_marks %}
+                    <div class="result-box">
+                        <p><strong>Total:</strong> {{ student_marks.total }}</p>
+                        <p><strong>Percentage:</strong> {{ student_marks.percentage }}%</p>
+                        <p><strong>Grade:</strong> <span class="grade-badge">{{ student_marks.grade }}</span></p>
+                    </div>
+                    <div class="row g-2 mt-3">
+                        <div class="col-6"><span>{{ student_marks.subject_name_1 }}:</span> {{ student_marks.subject_1 }}</div>
+                        <div class="col-6"><span>{{ student_marks.subject_name_2 }}:</span> {{ student_marks.subject_2 }}</div>
+                        <div class="col-6"><span>{{ student_marks.subject_name_3 }}:</span> {{ student_marks.subject_3 }}</div>
+                        <div class="col-6"><span>{{ student_marks.subject_name_4 }}:</span> {{ student_marks.subject_4 }}</div>
+                        <div class="col-6"><span>{{ student_marks.subject_name_5 }}:</span> {{ student_marks.subject_5 }}</div>
+                    </div>
+                {% else %}
+                    <p class="text-muted mb-0">No marks have been added for this student yet.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
